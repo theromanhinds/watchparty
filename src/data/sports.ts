@@ -1,0 +1,60 @@
+import type { Sport } from '../types';
+
+export const SPORTS: Sport[] = [
+  {
+    id: 'soccer',
+    slug: 'soccer',
+    name: 'Soccer / Football',
+    icon: '⚽',
+    description: 'The beautiful game. From the FIFA World Cup to MLS, find bars showing every match.',
+    eventSlugs: ['fifa-world-cup-2026', 'mls-2026', 'champions-league-2025-26'],
+  },
+  {
+    id: 'basketball',
+    slug: 'basketball',
+    name: 'Basketball',
+    icon: '🏀',
+    description: 'NBA Finals, March Madness, and everything in between.',
+    eventSlugs: ['nba-finals-2026', 'nba-playoffs-2026'],
+  },
+  {
+    id: 'football',
+    slug: 'football',
+    name: 'American Football',
+    icon: '🏈',
+    description: 'NFL Sunday, Super Bowl parties, and college football watch parties.',
+    eventSlugs: ['nfl-2026-season', 'super-bowl-lxi'],
+  },
+  {
+    id: 'hockey',
+    slug: 'hockey',
+    name: 'Hockey',
+    icon: '🏒',
+    description: 'Stanley Cup Playoffs and regular season NHL action.',
+    eventSlugs: ['stanley-cup-finals-2026'],
+  },
+  {
+    id: 'boxing',
+    slug: 'boxing',
+    name: 'Boxing & MMA',
+    icon: '🥊',
+    description: 'PPV fight nights, UFC events, and boxing matches.',
+    eventSlugs: [],
+  },
+  {
+    id: 'baseball',
+    slug: 'baseball',
+    name: 'Baseball',
+    icon: '⚾',
+    description: 'World Series, playoffs, and regular season MLB watch parties.',
+    eventSlugs: ['mlb-world-series-2026'],
+  },
+  {
+    id: 'motorsports',
+    slug: 'motorsports',
+    name: 'Motorsports',
+    icon: '🏎️',
+    description: 'Formula 1, NASCAR, and IndyCar watch parties.',
+    eventSlugs: [],
+  },
+];

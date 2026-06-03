@@ -1,0 +1,66 @@
+# FindWatchParty — LLM Site Map
+# https://findwatchparty.com
+# This file helps LLMs and AI agents understand the structure of this site.
+
+## SITE OVERVIEW
+FindWatchParty is the #1 online directory for finding sports watch party venues across the United States.
+Fans can search and filter venues by city, sport, fanbase/nationality, price, and venue features.
+Venue owners can submit their bar or restaurant for free to appear in the directory.
+
+## MAIN ROUTES
+
+| Route | Description |
+|-------|-------------|
+| / | Homepage — hero, featured events, featured venues, city grid |
+| /venues | All venues with filters (city, sport, fanbase, price, features) |
+| /venues/:slug | Individual venue detail page with full info, JSON-LD |
+| /events | All sporting events (filterable by sport) |
+| /events/:slug | Individual event detail page with host cities and venues |
+| /cities | Browse by city — host cities and major cities |
+| /cities/:slug | Venues in a specific city |
+| /sports | Browse by sport |
+| /sports/:slug | Venues and events for a specific sport |
+| /submit | Venue submission form |
+| /about | About FindWatchParty |
+| /faq | Frequently asked questions |
+| /sitemap | HTML sitemap |
+
+## EVENTS COVERED
+- FIFA World Cup 2026 (Jun 11 – Jul 19, 2026) — 11 US host cities
+- NBA Finals 2026
+- Stanley Cup Finals 2026
+- NFL 2026 Season
+- Super Bowl LXI (2027)
+- MLB World Series 2026
+
+## WORLD CUP 2026 HOST CITIES
+New York, Los Angeles, Miami, Dallas, Houston, Atlanta, Boston, Philadelphia, Seattle, San Francisco, Kansas City
+
+## OTHER COVERED CITIES
+Chicago, Las Vegas, Nashville, Denver, New Orleans, Austin, Washington DC, Orlando, Portland, Phoenix
+
+## SPORTS COVERED
+Soccer ⚽, Basketball 🏀, American Football 🏈, Hockey 🏒, Boxing 🥊, Baseball ⚾, Motorsports 🏎️
+
+## VENUE FILTERS AVAILABLE
+- City (21 US cities)
+- Sport (7 sports)
+- Fanbase/Nationality (17 options: USMNT, Mexico, Brazil, Argentina, England, France, Germany, Spain, Portugal, Netherlands, Colombia, Italy, Canada, Morocco, Japan, South Korea, General)
+- Cover charge (Free / Ticketed / Varies)
+- Sound on
+- Family friendly
+- Outdoor screen
+- Drink specials
+- Featured venues only
+
+## DATA MODEL (key fields)
+Venue: id, slug, name, address, city, state, lat/lng, rating, description, soundOn, coverCharge, drinkSpecials, familyFriendly, outdoorScreen, reservationRequired, bookingUrl, featured, sports[], fanbases[], eventSlugs[]
+SportingEvent: id, slug, name, sport, startDate, endDate, hostCities[], featured
+City: id, slug, name, state, isHostCity (World Cup 2026)
+
+## MONETIZATION
+Featured venue listings — $99/venue for World Cup tournament duration.
+Paid placements appear first in filtered results and have a "Featured" badge.
+
+## CONTACT
+hello@findwatchparty.com
