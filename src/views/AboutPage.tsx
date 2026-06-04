@@ -1,3 +1,5 @@
+'use client';
+
 import { SEOHead } from '../components/shared/SEOHead';
 
 export function AboutPage() {

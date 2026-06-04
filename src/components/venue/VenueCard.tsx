@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { MapPin, Star, Volume2, Users, ExternalLink } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -92,7 +92,7 @@ export function VenueCard({ venue, className }: VenueCardProps) {
 
         {/* Actions */}
         <div className="mt-auto flex gap-2 pt-2">
-          <Link to={`/venues/${venue.slug}`} className="flex-1">
+          <Link href={`/venues/${venue.slug}`} className="flex-1">
             <Button variant="secondary" size="sm" className="w-full">
               View Details
             </Button>

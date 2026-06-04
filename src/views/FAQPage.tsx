@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { SEOHead } from '../components/shared/SEOHead';
 import { ChevronDown, ChevronUp } from 'lucide-react';

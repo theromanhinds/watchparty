@@ -1,4 +1,7 @@
-import { useParams, Link } from 'react-router-dom';
+'use client';
+
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { Calendar, MapPin } from 'lucide-react';
 import { EVENTS } from '../data/events';
 import { VENUES } from '../data/venues';
@@ -74,7 +77,7 @@ export function EventDetailPage() {
               {hostCities.map((city) => (
                 <Link
                   key={city!.slug}
-                  to={`/cities/${city!.slug}?event=${event.slug}`}
+                  href={`/cities/${city!.slug}?event=${event.slug}`}
                   className="rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors"
                 >
                   {city!.name}, {city!.stateCode} →
@@ -95,7 +98,7 @@ export function EventDetailPage() {
               {venues.map((v) => <VenueCard key={v.id} venue={v} />)}
             </div>
           ) : (
-            <p className="text-gray-500 mt-4">No venues listed yet. <Link to="/submit" className="text-brand-600 hover:underline">Add yours →</Link></p>
+            <p className="text-gray-500 mt-4">No venues listed yet. <Link href="/submit" className="text-brand-600 hover:underline">Add yours →</Link></p>
           )}
         </div>
       </div>

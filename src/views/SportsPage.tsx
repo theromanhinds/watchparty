@@ -1,7 +1,9 @@
+'use client';
+
 import { SEOHead } from '../components/shared/SEOHead';
 import { SPORTS } from '../data/sports';
 import { EVENTS } from '../data/events';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export function SportsPage() {
   return (
@@ -18,7 +20,7 @@ export function SportsPage() {
             return (
               <Link
                 key={sport.id}
-                to={`/sports/${sport.slug}`}
+                href={`/sports/${sport.slug}`}
                 className="group block rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
                 aria-label={`Watch parties for ${sport.name}`}
               >

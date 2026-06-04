@@ -1,8 +1,10 @@
+'use client';
+
 import { SEOHead } from '../components/shared/SEOHead';
 import { CITIES } from '../data/cities';
 import { EVENTS } from '../data/events';
 import { SPORTS } from '../data/sports';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 export function SitemapPage() {
   return (
@@ -28,7 +30,7 @@ export function SitemapPage() {
                 { to: '/faq', label: 'FAQ' },
               ].map((l) => (
                 <li key={l.to}>
-                  <Link to={l.to} className="text-brand-600 hover:underline">{l.label}</Link>
+                  <Link href={l.to} className="text-brand-600 hover:underline">{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -40,7 +42,7 @@ export function SitemapPage() {
             <ul className="space-y-2 text-sm">
               {EVENTS.map((e) => (
                 <li key={e.slug}>
-                  <Link to={`/events/${e.slug}`} className="text-brand-600 hover:underline">{e.name}</Link>
+                  <Link href={`/events/${e.slug}`} className="text-brand-600 hover:underline">{e.name}</Link>
                 </li>
               ))}
             </ul>
@@ -52,7 +54,7 @@ export function SitemapPage() {
             <ul className="space-y-2 text-sm">
               {SPORTS.map((s) => (
                 <li key={s.slug}>
-                  <Link to={`/sports/${s.slug}`} className="text-brand-600 hover:underline">
+                  <Link href={`/sports/${s.slug}`} className="text-brand-600 hover:underline">
                     {s.icon} {s.name}
                   </Link>
                 </li>
@@ -66,7 +68,7 @@ export function SitemapPage() {
             <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 text-sm">
               {CITIES.map((c) => (
                 <li key={c.slug}>
-                  <Link to={`/cities/${c.slug}`} className="text-brand-600 hover:underline">
+                  <Link href={`/cities/${c.slug}`} className="text-brand-600 hover:underline">
                     {c.name}, {c.stateCode}
                   </Link>
                 </li>

@@ -1,4 +1,7 @@
-import { useParams } from 'react-router-dom';
+'use client';
+
+import { useParams, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import { CITIES } from '../data/cities';
 import { VENUES } from '../data/venues';
@@ -8,11 +11,10 @@ import { Breadcrumb } from '../components/shared/Breadcrumb';
 import { VenueCard } from '../components/venue/VenueCard';
 import { Badge } from '../components/ui/Badge';
 import { NotFoundPage } from './NotFoundPage';
-import { Link, useSearchParams } from 'react-router-dom';
 
 export function CityDetailPage() {
   const { slug } = useParams<{ slug: string }>();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const eventFilter = searchParams.get('event');
 
   const city = CITIES.find((c) => c.slug === slug);
@@ -63,7 +65,7 @@ export function CityDetailPage() {
             {cityEvents.map((event) => (
               <Link
                 key={event.slug}
-                to={`/events/${event.slug}`}
+                href={`/events/${event.slug}`}
                 className="rounded-full bg-brand-50 border border-brand-200 px-3 py-1 text-sm text-brand-700 hover:bg-brand-100 transition-colors"
               >
                 {event.shortName ?? event.name}
@@ -86,7 +88,7 @@ export function CityDetailPage() {
           ) : (
             <div className="rounded-xl border border-dashed border-gray-200 py-12 text-center">
               <p className="text-gray-500">No venues listed yet for {city.name}.</p>
-              <Link to="/submit" className="mt-3 inline-block text-sm text-brand-600 hover:underline">
+              <Link href="/submit" className="mt-3 inline-block text-sm text-brand-600 hover:underline">
                 List your venue →
               </Link>
             </div>

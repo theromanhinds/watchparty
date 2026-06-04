@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Calendar, MapPin } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { formatDateRange, isEventActive, isEventUpcoming } from '../../lib/utils';
@@ -32,7 +32,7 @@ export function EventCard({ event }: EventCardProps) {
 
   return (
     <Link
-      to={`/events/${event.slug}`}
+      href={`/events/${event.slug}`}
       className="group block rounded-xl overflow-hidden border border-gray-200 bg-white shadow-sm hover:shadow-md transition-shadow"
       aria-label={`Event: ${event.name}`}
     >

@@ -1,3 +1,5 @@
+'use client';
+
 import { SEOHead } from '../components/shared/SEOHead';
 import { EventCard } from '../components/event/EventCard';
 import { EVENTS } from '../data/events';

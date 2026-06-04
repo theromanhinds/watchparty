@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { SEOHead } from '../components/shared/SEOHead';
 import { VenueFilters } from '../components/venue/VenueFilters';
@@ -7,11 +9,11 @@ import { useFilters } from '../hooks/useFilters';
 import { useVenues } from '../hooks/useVenues';
 import { SlidersHorizontal } from 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 export function VenuesPage() {
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearchParams();
   const { filters, sort, updateFilter, setSort, resetFilters, activeFilterCount } = useFilters();
   const [showFilters, setShowFilters] = useState(false);
 

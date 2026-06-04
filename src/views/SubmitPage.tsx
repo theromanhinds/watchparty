@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { SEOHead } from '../components/shared/SEOHead';
 import { Button } from '../components/ui/Button';

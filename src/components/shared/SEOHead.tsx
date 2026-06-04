@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect } from 'react';
 import { SITE_NAME, SITE_DESCRIPTION } from '../../lib/constants';
 

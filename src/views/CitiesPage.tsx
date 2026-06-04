@@ -1,3 +1,5 @@
+'use client';
+
 import { SEOHead } from '../components/shared/SEOHead';
 import { CityCard } from '../components/city/CityCard';
 import { CITIES } from '../data/cities';

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import type { City } from '../../types';
@@ -13,7 +13,7 @@ export function CityCard({ city }: CityCardProps) {
 
   return (
     <Link
-      to={`/cities/${city.slug}`}
+      href={`/cities/${city.slug}`}
       className="group block rounded-xl border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md transition-shadow"
       aria-label={`Watch parties in ${city.name}, ${city.stateCode}`}
     >

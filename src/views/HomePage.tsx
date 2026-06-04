@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { SEOHead } from '../components/shared/SEOHead';
 import { EventCard } from '../components/event/EventCard';
 import { CityCard } from '../components/city/CityCard';
@@ -10,17 +12,17 @@ import { CITIES } from '../data/cities';
 import { VENUES } from '../data/venues';
 import { SPORTS } from '../data/sports';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { ArrowRight } from 'lucide-react';
 
 export function HomePage() {
   const [search, setSearch] = useState('');
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (search.trim()) {
-      navigate(`/venues?search=${encodeURIComponent(search.trim())}`);
+      router.push(`/venues?search=${encodeURIComponent(search.trim())}`);
     }
   };
 
@@ -65,7 +67,7 @@ export function HomePage() {
             {SPORTS.map((s) => (
               <Link
                 key={s.slug}
-                to={`/sports/${s.slug}`}
+                href={`/sports/${s.slug}`}
                 className="rounded-full bg-white/10 px-3 py-1.5 text-sm text-white hover:bg-white/20 transition-colors"
               >
                 {s.icon} {s.name}
@@ -82,7 +84,7 @@ export function HomePage() {
             <h2 className="text-2xl font-bold text-gray-900">Featured Events</h2>
             <p className="text-sm text-gray-500 mt-1">Find watch parties for the biggest games right now</p>
           </div>
-          <Link to="/events">
+          <Link href="/events">
             <Button variant="ghost" size="sm">
               All Events <ArrowRight size={14} />
             </Button>
@@ -103,7 +105,7 @@ export function HomePage() {
               <h2 className="text-2xl font-bold text-gray-900">⭐ Featured Venues</h2>
               <p className="text-sm text-gray-500 mt-1">Top-rated watch party venues across the country</p>
             </div>
-            <Link to="/venues">
+            <Link href="/venues">
               <Button variant="ghost" size="sm">
                 All Venues <ArrowRight size={14} />
               </Button>
@@ -124,7 +126,7 @@ export function HomePage() {
             <h2 className="text-2xl font-bold text-gray-900">Browse by City</h2>
             <p className="text-sm text-gray-500 mt-1">World Cup host cities and major US sports markets</p>
           </div>
-          <Link to="/cities">
+          <Link href="/cities">
             <Button variant="ghost" size="sm">
               All Cities <ArrowRight size={14} />
             </Button>
@@ -144,7 +146,7 @@ export function HomePage() {
           <p className="mt-2 text-brand-100">
             List your venue and reach thousands of fans searching for World Cup and sports watch parties near them.
           </p>
-          <Link to="/submit" className="mt-6 inline-block">
+          <Link href="/submit" className="mt-6 inline-block">
             <Button variant="secondary" size="lg">
               List Your Venue — It's Free
             </Button>

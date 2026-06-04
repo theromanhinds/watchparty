@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import { SITE_NAME } from '../../lib/constants';
 
@@ -37,7 +37,7 @@ export function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="flex items-center gap-2 font-bold text-gray-900">
+            <Link href="/" className="flex items-center gap-2 font-bold text-gray-900">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-600 text-white">
                 <MapPin size={16} strokeWidth={2.5} />
               </span>
@@ -63,7 +63,7 @@ export function Footer() {
               <ul className="mt-3 space-y-2">
                 {links.map((link) => (
                   <li key={link.href}>
-                    <Link to={link.href} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                    <Link href={link.href} className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
                       {link.label}
                     </Link>
                   </li>
@@ -76,8 +76,8 @@ export function Footer() {
         <div className="mt-10 border-t border-gray-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-400">
           <p>© {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link to="/privacy" className="hover:text-gray-600">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-gray-600">Terms of Service</Link>
+            <Link href="/privacy" className="hover:text-gray-600">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-gray-600">Terms of Service</Link>
           </div>
         </div>
       </div>

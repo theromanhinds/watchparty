@@ -1,4 +1,6 @@
-import { Link } from 'react-router-dom';
+'use client';
+
+import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 
 export function NotFoundPage() {
@@ -9,7 +11,7 @@ export function NotFoundPage() {
       <p className="mt-2 text-gray-500 max-w-sm">
         The page you're looking for doesn't exist or may have moved.
       </p>
-      <Link to="/" className="mt-6 inline-flex items-center gap-1 text-brand-600 hover:underline font-medium">
+      <Link href="/" className="mt-6 inline-flex items-center gap-1 text-brand-600 hover:underline font-medium">
         <MapPin size={14} /> Back to Home
       </Link>
     </div>

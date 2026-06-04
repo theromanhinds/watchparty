@@ -1,4 +1,7 @@
-import { useParams, Link } from 'react-router-dom';
+'use client';
+
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { MapPin, Phone, Globe, Star, ExternalLink, Volume2, Users, Calendar } from 'lucide-react';
 import { VENUES } from '../data/venues';
 import { EVENTS } from '../data/events';
@@ -94,7 +97,7 @@ export function VenueDetailPage() {
                   {hostedEvents.map((event) => (
                     <Link
                       key={event.id}
-                      to={`/events/${event.slug}`}
+                      href={`/events/${event.slug}`}
                       className="flex items-center justify-between rounded-lg border border-gray-100 p-3 hover:border-brand-200 hover:bg-brand-50 transition-colors"
                     >
                       <div>

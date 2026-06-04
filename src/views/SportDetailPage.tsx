@@ -1,4 +1,6 @@
-import { useParams } from 'react-router-dom';
+'use client';
+
+import { useParams } from 'next/navigation';
 import { SPORTS } from '../data/sports';
 import { VENUES } from '../data/venues';
 import { EVENTS } from '../data/events';
