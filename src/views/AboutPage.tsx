@@ -1,15 +1,8 @@
 'use client';
 
-import { SEOHead } from '../components/shared/SEOHead';
-
 export function AboutPage() {
   return (
     <>
-      <SEOHead
-        title="About FindWatchParty"
-        description="FindWatchParty is the #1 directory for finding sports watch parties across the United States. World Cup, NBA Finals, NFL, NHL, and more."
-      />
-
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12 prose prose-gray">
         <h1 className="text-3xl font-bold text-gray-900 not-prose">About FindWatchParty</h1>
 

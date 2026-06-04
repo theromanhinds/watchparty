@@ -1,20 +1,17 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Calendar, MapPin } from 'lucide-react';
 import { EVENTS } from '../data/events';
 import { VENUES } from '../data/venues';
 import { CITIES } from '../data/cities';
-import { SEOHead } from '../components/shared/SEOHead';
 import { Breadcrumb } from '../components/shared/Breadcrumb';
 import { VenueCard } from '../components/venue/VenueCard';
 import { Badge } from '../components/ui/Badge';
 import { NotFoundPage } from './NotFoundPage';
 import { formatDateRange, isEventActive } from '../lib/utils';
 
-export function EventDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
+export function EventDetailPage({ slug }: { slug: string }) {
   const event = EVENTS.find((e) => e.slug === slug);
 
   if (!event) return <NotFoundPage />;
@@ -35,23 +32,18 @@ export function EventDetailPage() {
 
   return (
     <>
-      <SEOHead
-        title={`${event.name} Watch Parties`}
-        description={`Find bars and venues hosting ${event.name} watch parties near you. ${event.description}`}
-        canonicalPath={`/events/${event.slug}`}
-      />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Events', href: '/events' }, { label: event.name }]} />
 
         {/* Event header */}
-        <div className="mt-6 rounded-xl overflow-hidden border border-gray-200 bg-white shadow-sm">
-          <div className="bg-gradient-to-br from-brand-700 to-brand-900 p-8 text-white">
+        <div className="mt-6 overflow-hidden rounded-2xl bg-white shadow-card">
+          <div className="bg-sky-50 p-8">
             {active && <Badge variant="success" className="mb-3">🔴 Live Now</Badge>}
-            <p className="text-brand-200 font-medium">{event.sport}</p>
-            <h1 className="text-4xl font-extrabold mt-1">{event.name}</h1>
-            <div className="flex flex-wrap gap-4 mt-4 text-brand-200 text-sm">
+            <p className="font-medium text-sky-700">{event.sport}</p>
+            <h1 className="mt-1 text-3xl font-bold text-gray-900">{event.name}</h1>
+            <div className="mt-4 flex flex-wrap gap-4 text-sm text-gray-600">
               <span className="flex items-center gap-1.5">
                 <Calendar size={14} />
                 {formatDateRange(event.startDate, event.endDate)}
@@ -65,7 +57,7 @@ export function EventDetailPage() {
             </div>
           </div>
           <div className="p-6">
-            <p className="text-gray-700 leading-relaxed">{event.description}</p>
+            <p className="leading-normal text-gray-700">{event.description}</p>
           </div>
         </div>
 
@@ -94,7 +86,7 @@ export function EventDetailPage() {
             <span className="ml-2 text-sm font-normal text-gray-400">({venues.length} venues)</span>
           </h2>
           {venues.length > 0 ? (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {venues.map((v) => <VenueCard key={v.id} venue={v} />)}
             </div>
           ) : (

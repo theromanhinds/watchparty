@@ -4,7 +4,6 @@ import { useParams } from 'next/navigation';
 import { SPORTS } from '../data/sports';
 import { VENUES } from '../data/venues';
 import { EVENTS } from '../data/events';
-import { SEOHead } from '../components/shared/SEOHead';
 import { Breadcrumb } from '../components/shared/Breadcrumb';
 import { VenueCard } from '../components/venue/VenueCard';
 import { EventCard } from '../components/event/EventCard';
@@ -20,12 +19,6 @@ export function SportDetailPage() {
 
   return (
     <>
-      <SEOHead
-        title={`${sport.name} Watch Parties`}
-        description={`Find bars and venues hosting ${sport.name} watch parties near you. ${sport.description}`}
-        canonicalPath={`/sports/${sport.slug}`}
-      />
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Sports', href: '/sports' }, { label: sport.name }]} />
 

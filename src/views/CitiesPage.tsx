@@ -1,6 +1,5 @@
 'use client';
 
-import { SEOHead } from '../components/shared/SEOHead';
 import { CityCard } from '../components/city/CityCard';
 import { CITIES } from '../data/cities';
 
@@ -10,8 +9,6 @@ export function CitiesPage() {
 
   return (
     <>
-      <SEOHead title="Watch Party Cities" description="Find watch party venues in every major US city. World Cup host cities plus Chicago, Vegas, Nashville and more." />
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gray-900">Browse by City</h1>
         <p className="mt-1 text-gray-500">Find watch party venues near you in every major US sports market</p>

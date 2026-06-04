@@ -1,155 +1,121 @@
 'use client';
 
 import Link from 'next/link';
-import { SEOHead } from '../components/shared/SEOHead';
-import { EventCard } from '../components/event/EventCard';
-import { CityCard } from '../components/city/CityCard';
-import { VenueCard } from '../components/venue/VenueCard';
-import { SearchBar } from '../components/search/SearchBar';
-import { Button } from '../components/ui/Button';
-import { EVENTS } from '../data/events';
-import { CITIES } from '../data/cities';
-import { VENUES } from '../data/venues';
-import { SPORTS } from '../data/sports';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight } from 'lucide-react';
+import { Search } from 'lucide-react';
+import { VenueCard } from '../components/venue/VenueCard';
+import { FilterPills } from '../components/venue/FilterPills';
+import { VENUES } from '../data/venues';
+import { FILTER_PILLS, FEATURED_PRICE } from '../lib/constants';
+
+const HOME_LIMIT = 12;
 
 export function HomePage() {
   const [search, setSearch] = useState('');
+  const [activePill, setActivePill] = useState('all');
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (search.trim()) {
       router.push(`/venues?search=${encodeURIComponent(search.trim())}`);
+    } else {
+      router.push('/venues');
     }
   };
 
-  const featuredEvents = EVENTS.filter((e) => e.featured);
-  const hostCities = CITIES.filter((c) => c.isHostCity).slice(0, 8);
-  const featuredVenues = VENUES.filter((v) => v.featured).slice(0, 3);
+  const matcher = FILTER_PILLS.find((p) => p.id === activePill)?.match ?? (() => true);
+
+  const venues = useMemo(() => {
+    const filtered = VENUES.filter(matcher);
+    return [...filtered]
+      .sort((a, b) => Number(b.featured) - Number(a.featured) || a.name.localeCompare(b.name))
+      .slice(0, HOME_LIMIT);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePill]);
 
   return (
     <>
-      <SEOHead />
-
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-brand-700 via-brand-800 to-gray-900 py-20 text-white">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-brand-300 font-medium text-sm uppercase tracking-widest mb-3">
-            ⚽ FIFA World Cup 2026 · NBA Finals · NFL · and more
-          </p>
-          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight">
-            Find the perfect <span className="text-brand-300">watch party</span><br />
-            near you
-          </h1>
-          <p className="mt-5 text-lg text-brand-100 max-w-2xl mx-auto">
-            Filter by city, sport, fanbase, price, and vibe. Discover bars and venues hosting watch parties for every major sporting event.
-          </p>
+      <section className="bg-white px-4 py-12 text-center">
+        <p className="text-xs font-medium text-gray-500">
+          FIFA World Cup 2026 · New York &amp; New Jersey
+        </p>
+        <h1 className="mt-2 text-3xl font-bold leading-snug text-gray-900">
+          Find your World Cup watch party in NYC
+        </h1>
+        <p className="mt-2 text-sm text-gray-500">
+          {VENUES.length} venues across New York and New Jersey
+        </p>
 
-          {/* Search */}
-          <form onSubmit={handleSearch} className="mt-8 flex gap-3 max-w-xl mx-auto">
-            <SearchBar
-              value={search}
-              onChange={setSearch}
-              placeholder="Search by city, venue, or event…"
-              size="lg"
-              className="flex-1"
-            />
-            <Button type="submit" size="lg">
-              Search
-            </Button>
-          </form>
-
-          {/* Quick filters */}
-          <div className="mt-6 flex flex-wrap justify-center gap-2">
-            {SPORTS.map((s) => (
-              <Link
-                key={s.slug}
-                href={`/sports/${s.slug}`}
-                className="rounded-full bg-white/10 px-3 py-1.5 text-sm text-white hover:bg-white/20 transition-colors"
-              >
-                {s.icon} {s.name}
-              </Link>
-            ))}
-          </div>
-        </div>
+        {/* Search bar */}
+        <form
+          onSubmit={handleSearch}
+          className="mx-auto mt-6 flex max-w-md items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2.5 shadow-card"
+        >
+          <input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by venue or neighborhood…"
+            aria-label="Search venues"
+            className="min-w-0 flex-1 bg-transparent text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
+          />
+          <button
+            type="submit"
+            aria-label="Search"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-500 text-white transition-colors hover:bg-sky-600"
+          >
+            <Search size={16} />
+          </button>
+        </form>
       </section>
 
-      {/* Featured Events */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Featured Events</h2>
-            <p className="text-sm text-gray-500 mt-1">Find watch parties for the biggest games right now</p>
-          </div>
-          <Link href="/events">
-            <Button variant="ghost" size="sm">
-              All Events <ArrowRight size={14} />
-            </Button>
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featuredEvents.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
-      </section>
+      {/* Filter pills */}
+      <FilterPills selected={activePill} onSelect={setActivePill} sticky />
 
-      {/* Featured Venues */}
-      <section className="bg-white border-y border-gray-200 py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">⭐ Featured Venues</h2>
-              <p className="text-sm text-gray-500 mt-1">Top-rated watch party venues across the country</p>
-            </div>
-            <Link href="/venues">
-              <Button variant="ghost" size="sm">
-                All Venues <ArrowRight size={14} />
-              </Button>
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredVenues.map((venue) => (
+      {/* Venue grid */}
+      <section className="mx-auto max-w-6xl px-4 py-6">
+        {venues.length === 0 ? (
+          <p className="py-12 text-center text-sm text-gray-500">
+            No venues match this filter yet.
+          </p>
+        ) : (
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {venues.map((venue) => (
               <VenueCard key={venue.id} venue={venue} />
             ))}
           </div>
-        </div>
-      </section>
+        )}
 
-      {/* Browse by City */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-14">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Browse by City</h2>
-            <p className="text-sm text-gray-500 mt-1">World Cup host cities and major US sports markets</p>
-          </div>
-          <Link href="/cities">
-            <Button variant="ghost" size="sm">
-              All Cities <ArrowRight size={14} />
-            </Button>
+        <div className="mt-6 text-center">
+          <Link
+            href="/venues"
+            className="text-sm font-semibold text-sky-600 hover:text-sky-700"
+          >
+            Show all {VENUES.length} venues →
           </Link>
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {hostCities.map((city) => (
-            <CityCard key={city.id} city={city} />
-          ))}
-        </div>
       </section>
 
-      {/* CTA — List your venue */}
-      <section className="bg-brand-600 py-14 text-white text-center">
-        <div className="mx-auto max-w-2xl px-4">
-          <h2 className="text-2xl font-bold">Own a bar or venue?</h2>
-          <p className="mt-2 text-brand-100">
-            List your venue and reach thousands of fans searching for World Cup and sports watch parties near them.
-          </p>
-          <Link href="/submit" className="mt-6 inline-block">
-            <Button variant="secondary" size="lg">
-              List Your Venue — It's Free
-            </Button>
+      {/* CTA banner */}
+      <section className="mx-4 mb-12 mt-4 rounded-2xl bg-sky-50 px-6 py-8 text-center">
+        <h2 className="text-xl font-semibold text-gray-900">Own a watch party venue?</h2>
+        <p className="mx-auto mt-2 max-w-md text-sm text-gray-600">
+          Get a free listing or go featured for {FEATURED_PRICE} for the full World Cup tournament.
+        </p>
+        <div className="mt-5 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Link
+            href="/submit"
+            className="rounded-full border border-gray-300 bg-white px-6 py-3 text-sm font-semibold text-gray-700 transition-colors hover:border-gray-400"
+          >
+            List Free
+          </Link>
+          <Link
+            href="/submit#featured"
+            className="rounded-full bg-sky-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-sky-600"
+          >
+            Get Featured — {FEATURED_PRICE}
           </Link>
         </div>
       </section>

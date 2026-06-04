@@ -1,6 +1,5 @@
 'use client';
 
-import { SEOHead } from '../components/shared/SEOHead';
 import { SPORTS } from '../data/sports';
 import { EVENTS } from '../data/events';
 import Link from 'next/link';
@@ -8,8 +7,6 @@ import Link from 'next/link';
 export function SportsPage() {
   return (
     <>
-      <SEOHead title="Sports" description="Find watch party venues for soccer, basketball, football, hockey, boxing, and more." />
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gray-900">Browse by Sport</h1>
         <p className="mt-1 text-gray-500">Find watch party venues for every sport</p>

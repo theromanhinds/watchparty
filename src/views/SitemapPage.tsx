@@ -1,6 +1,5 @@
 'use client';
 
-import { SEOHead } from '../components/shared/SEOHead';
 import { CITIES } from '../data/cities';
 import { EVENTS } from '../data/events';
 import { SPORTS } from '../data/sports';
@@ -9,8 +8,6 @@ import Link from 'next/link';
 export function SitemapPage() {
   return (
     <>
-      <SEOHead title="Sitemap – FindWatchParty" description="Full sitemap of all pages on FindWatchParty." />
-
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-10">
         <h1 className="text-3xl font-bold text-gray-900 mb-8">Sitemap</h1>
 

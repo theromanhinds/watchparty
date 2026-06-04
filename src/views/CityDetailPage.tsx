@@ -1,19 +1,17 @@
 'use client';
 
-import { useParams, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { MapPin } from 'lucide-react';
 import { CITIES } from '../data/cities';
 import { VENUES } from '../data/venues';
 import { EVENTS } from '../data/events';
-import { SEOHead } from '../components/shared/SEOHead';
 import { Breadcrumb } from '../components/shared/Breadcrumb';
 import { VenueCard } from '../components/venue/VenueCard';
 import { Badge } from '../components/ui/Badge';
 import { NotFoundPage } from './NotFoundPage';
 
-export function CityDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
+export function CityDetailPage({ slug }: { slug: string }) {
   const searchParams = useSearchParams();
   const eventFilter = searchParams.get('event');
 
@@ -35,11 +33,6 @@ export function CityDetailPage() {
 
   return (
     <>
-      <SEOHead
-        title={`Watch Party Venues in ${city.name}, ${city.stateCode}`}
-        description={`Find the best bars and venues hosting sports watch parties in ${city.name}. Filter by sport, fanbase, price, and more.`}
-        canonicalPath={`/cities/${city.slug}`}
-      />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
@@ -82,7 +75,7 @@ export function CityDetailPage() {
           </h2>
 
           {venues.length > 0 ? (
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
               {venues.map((v) => <VenueCard key={v.id} venue={v} />)}
             </div>
           ) : (

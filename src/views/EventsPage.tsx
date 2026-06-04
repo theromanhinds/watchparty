@@ -1,6 +1,5 @@
 'use client';
 
-import { SEOHead } from '../components/shared/SEOHead';
 import { EventCard } from '../components/event/EventCard';
 import { EVENTS } from '../data/events';
 import { SPORTS } from '../data/sports';
@@ -16,8 +15,6 @@ export function EventsPage() {
 
   return (
     <>
-      <SEOHead title="Sporting Events" description="Find watch parties for the World Cup, NBA Finals, Super Bowl, Stanley Cup, and more major sporting events." />
-
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gray-900">Upcoming Sporting Events</h1>
         <p className="mt-1 text-gray-500">Find watch parties for every major event</p>

@@ -24,6 +24,11 @@ module.exports = {
           dark: '#d97706',
         },
       },
+      boxShadow: {
+        card: '0 0 0 1px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.10)',
+        'card-hover': '0 0 0 1px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.08), 0 8px 16px rgba(0,0,0,0.12)',
+        nav: '0 1px 0 rgba(0,0,0,0.08)',
+      },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },

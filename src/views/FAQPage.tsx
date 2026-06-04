@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { SEOHead } from '../components/shared/SEOHead';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const FAQS = [
@@ -59,11 +58,6 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 export function FAQPage() {
   return (
     <>
-      <SEOHead
-        title="FAQ – FindWatchParty"
-        description="Frequently asked questions about FindWatchParty — how to find venues, list your bar, and more."
-      />
-
       <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-3xl font-bold text-gray-900">Frequently Asked Questions</h1>
         <p className="mt-2 text-gray-500">Everything you need to know about FindWatchParty.</p>

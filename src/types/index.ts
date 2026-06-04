@@ -7,6 +7,7 @@ export interface Venue {
   slug: string;
   name: string;
   address: string;
+  neighborhood?: string;
   city: string;
   citySlug: string;
   state: string;
@@ -16,11 +17,14 @@ export interface Venue {
   lng?: number;
   phone?: string;
   website?: string;
+  instagram?: string;
   googleMapsUrl?: string;
   rating?: number;
   reviewCount?: number;
   description?: string;
   imageUrl?: string;
+  venueType?: string;
+  matchesNote?: string;
 
   // Filters
   soundOn: boolean;
