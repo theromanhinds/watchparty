@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { VENUES } from '@/data/venues';
 import { CITIES } from '@/data/cities';
 import { EVENTS } from '@/data/events';
+import { MATCHES } from '@/data/matches';
 import { SITE_URL } from '@/lib/constants';
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -10,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes: MetadataRoute.Sitemap = [
     '',
     '/venues',
+    '/matches',
     '/submit',
     '/about',
     '/faq',
@@ -41,5 +43,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...cityRoutes, ...eventRoutes, ...venueRoutes];
+  const matchRoutes: MetadataRoute.Sitemap = MATCHES.map((match) => ({
+    url: `${SITE_URL}/matches/${match.slug}`,
+    lastModified: now,
+    changeFrequency: 'weekly',
+    priority: match.isLocalMatch ? 0.85 : 0.65,
+  }));
+
+  return [...staticRoutes, ...cityRoutes, ...eventRoutes, ...matchRoutes, ...venueRoutes];
 }

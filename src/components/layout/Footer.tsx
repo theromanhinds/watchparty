@@ -3,6 +3,7 @@ import { SITE_NAME } from '../../lib/constants';
 
 const FOOTER_LINKS = [
   { href: '/venues', label: 'All Venues' },
+  { href: '/matches', label: 'Match Schedule' },
   { href: '/cities/new-york', label: 'New York' },
   { href: '/cities/new-jersey', label: 'New Jersey' },
   { href: '/submit', label: 'List Your Venue' },

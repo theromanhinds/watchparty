@@ -41,6 +41,9 @@ export interface Venue {
 
   // Featured / monetization
   featured: boolean;
+  featuredTier?: 'city' | 'neighborhood' | 'match';
+  featuredNeighborhood?: string;
+  featuredMatchSlugs?: string[];
 
   // Associations
   sports: string[];          // sport slugs
@@ -88,6 +91,7 @@ export interface Sport {
 
 export interface FilterState {
   city: string;
+  neighborhood: string;
   sport: string;
   fanbase: string;
   coverCharge: string;  // 'all' | 'free' | 'ticketed' | 'varies'
@@ -96,6 +100,7 @@ export interface FilterState {
   outdoorScreen: boolean | null;
   drinkSpecials: boolean | null;
   featured: boolean | null;
+  matchSlug?: string;
   search: string;
 }
 

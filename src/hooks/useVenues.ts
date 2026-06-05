@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { VENUES } from '../data/venues';
+import { sortVenues } from '../lib/featured';
 import type { FilterState, SortOption, Venue } from '../types';
 
 export function useVenues(filters: Partial<FilterState>, sort: SortOption = 'featured'): Venue[] {
@@ -19,6 +20,10 @@ export function useVenues(filters: Partial<FilterState>, sort: SortOption = 'fea
 
     if (filters.city && filters.city !== 'all') {
       results = results.filter((v) => v.citySlug === filters.city);
+    }
+
+    if (filters.neighborhood && filters.neighborhood !== 'all') {
+      results = results.filter((v) => v.neighborhood === filters.neighborhood);
     }
 
     if (filters.sport && filters.sport !== 'all') {
@@ -53,15 +58,9 @@ export function useVenues(filters: Partial<FilterState>, sort: SortOption = 'fea
       results = results.filter((v) => v.featured);
     }
 
-    // Sort
-    if (sort === 'featured') {
-      results.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (b.rating ?? 0) - (a.rating ?? 0));
-    } else if (sort === 'rating') {
-      results.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
-    } else if (sort === 'name') {
-      results.sort((a, b) => a.name.localeCompare(b.name));
-    }
-
-    return results;
+    return sortVenues(results, sort, {
+      neighborhood: filters.neighborhood && filters.neighborhood !== 'all' ? filters.neighborhood : undefined,
+      matchSlug: filters.matchSlug,
+    });
   }, [filters, sort]);
 }

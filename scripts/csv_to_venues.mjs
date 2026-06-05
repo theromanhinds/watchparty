@@ -1,52 +1,84 @@
-// Converts ../watchpartydata/venues_with_photos.csv → src/data/venues.ts
-// Run from the watchparty project root:  node scripts/csv_to_venues.mjs
+// Converts ../watchpartydata/venues_with_neighborhoods.csv -> src/data/venues.ts.
+// Run from the watchparty project root: node scripts/csv_to_venues.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const CSV_PATH = join(ROOT, '..', 'watchpartydata', 'venues_with_photos.csv');
+const CSV_PATH = join(ROOT, '..', 'watchpartydata', 'venues_with_neighborhoods.csv');
+const PHOTO_CSV_PATH = join(ROOT, '..', 'watchpartydata', 'venues_with_photos.csv');
 const OUT_PATH = join(ROOT, 'src', 'data', 'venues.ts');
 
-// ── Minimal RFC-4180 CSV parser (handles quotes, commas, newlines) ──
 function parseCsv(text) {
   const rows = [];
   let row = [];
   let field = '';
   let inQuotes = false;
+
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (inQuotes) {
       if (c === '"') {
-        if (text[i + 1] === '"') { field += '"'; i++; }
-        else inQuotes = false;
-      } else field += c;
+        if (text[i + 1] === '"') {
+          field += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        field += c;
+      }
+    } else if (c === '"') {
+      inQuotes = true;
+    } else if (c === ',') {
+      row.push(field);
+      field = '';
+    } else if (c === '\r') {
+      // Ignore CR in CRLF files.
+    } else if (c === '\n') {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = '';
     } else {
-      if (c === '"') inQuotes = true;
-      else if (c === ',') { row.push(field); field = ''; }
-      else if (c === '\r') { /* ignore */ }
-      else if (c === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
-      else field += c;
+      field += c;
     }
   }
-  if (field.length > 0 || row.length > 0) { row.push(field); rows.push(row); }
+
+  if (field.length > 0 || row.length > 0) {
+    row.push(field);
+    rows.push(row);
+  }
+
   return rows;
 }
 
-const raw = readFileSync(CSV_PATH, 'utf8');
-const rows = parseCsv(raw).filter((r) => r.length > 1 && r.some((c) => c.trim() !== ''));
-const header = rows[0].map((h) => h.trim());
-const records = rows.slice(1).map((r) => {
-  const obj = {};
-  header.forEach((h, i) => { obj[h] = (r[i] ?? '').trim(); });
-  return obj;
-});
+function readRecords(path) {
+  const raw = readFileSync(path, 'utf8');
+  const rows = parseCsv(raw).filter((r) => r.length > 1 && r.some((c) => c.trim() !== ''));
+  const header = rows[0].map((h) => h.trim());
+
+  return rows.slice(1).map((r) => {
+    const obj = {};
+    header.forEach((h, i) => {
+      obj[h] = (r[i] ?? '').trim();
+    });
+    return obj;
+  });
+}
+
+const records = readRecords(CSV_PATH);
+const photoRecords = readRecords(PHOTO_CSV_PATH);
+
+const recordKey = (rec) =>
+  `${(rec.venue_name || '').trim()}|${(rec.address || '').trim()}`.toLowerCase();
+
+const photosByVenue = new Map(photoRecords.map((rec) => [recordKey(rec), rec.photo_url || '']));
 
 const slugify = (s) =>
   s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-// ── borough/city normalization ──
 const NYC_BOROUGHS = ['Brooklyn', 'Manhattan', 'Queens', 'Bronx', 'Staten Island'];
 
 function resolveLocation(boroughOrCity) {
@@ -54,13 +86,13 @@ function resolveLocation(boroughOrCity) {
   if (NYC_BOROUGHS.includes(v)) {
     return { city: v, citySlug: 'new-york', state: 'New York', stateCode: 'NY' };
   }
-  // NJ entries look like "Hoboken NJ", "Jersey City NJ", "Paterson NJ / Clifton NJ"
+
   if (/NJ/i.test(v)) {
     const first = v.split('/')[0].trim();
     const city = first.replace(/\s*NJ\s*$/i, '').trim();
     return { city, citySlug: 'new-jersey', state: 'New Jersey', stateCode: 'NJ' };
   }
-  // Fallback: treat as NYC
+
   return { city: v || 'New York', citySlug: 'new-york', state: 'New York', stateCode: 'NY' };
 }
 
@@ -117,14 +149,16 @@ const FANBASE_ALIASES = {
 
 function parseFanbases(val) {
   if (!val) return [];
-  return [...new Set(
-    val
-      .split(/[;,]/)
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map((s) => FANBASE_ALIASES[s.toLowerCase()] ?? slugify(s))
-      .filter(Boolean)
-  )];
+  return [
+    ...new Set(
+      val
+        .split(/[;,]/)
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .map((s) => FANBASE_ALIASES[s.toLowerCase()] ?? slugify(s))
+        .filter(Boolean)
+    ),
+  ];
 }
 
 function jsStr(s) {
@@ -146,7 +180,9 @@ const venues = records.map((rec, idx) => {
   const name = (rec.venue_name || '').trim();
   const slug = uniqueSlug(slugify(name));
   const notes = (rec.notes || '').trim();
-  const neighborhood = (rec.neighborhood || '').trim() || undefined;
+  const rawNeighborhood = (rec.neighborhood || '').trim();
+  const neighborhood =
+    rawNeighborhood && !/^unknown$/i.test(rawNeighborhood) ? rawNeighborhood : undefined;
   const wcConfirmed = (rec.world_cup_event_confirmed || '').toLowerCase();
 
   const eventSlugs = [];
@@ -165,11 +201,9 @@ const venues = records.map((rec, idx) => {
   const address = (rec.address || '').trim();
   const googleMapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${name} ${address}`)}`;
 
-  // photo_url is like "venue_photos/foo.jpg" or "venue_photos/_fallback_manhattan.jpg"
-  // → serve from Next.js public folder as "/venue-photos/foo.jpg"
-  const rawPhotoUrl = (rec.photo_url || '').trim();
+  const rawPhotoUrl = (rec.photo_url || photosByVenue.get(recordKey(rec)) || '').trim();
   const imageUrl = rawPhotoUrl
-    ? '/' + rawPhotoUrl.replace(/^venue_photos\//, 'venue-photos/')
+    ? '/' + rawPhotoUrl.replace(/^venue_photos\//, 'venue-photos/').replace(/\.(jpe?g)$/i, '.webp')
     : undefined;
 
   return {
@@ -208,10 +242,12 @@ const venues = records.map((rec, idx) => {
   };
 });
 
-// ── Serialize to TS ──
 function serializeVenue(v) {
   const lines = [];
-  const push = (key, val) => { if (val !== undefined) lines.push(`    ${key}: ${val},`); };
+  const push = (key, val) => {
+    if (val !== undefined) lines.push(`    ${key}: ${val},`);
+  };
+
   push('id', jsStr(v.id));
   push('slug', jsStr(v.slug));
   push('name', jsStr(v.name));
@@ -243,13 +279,14 @@ function serializeVenue(v) {
   push('sports', `[${v.sports.map(jsStr).join(', ')}]`);
   push('fanbases', `[${v.fanbases.map(jsStr).join(', ')}]`);
   push('eventSlugs', `[${v.eventSlugs.map(jsStr).join(', ')}]`);
+
   return `  {\n${lines.join('\n')}\n  }`;
 }
 
 const out =
   `import type { Venue } from '../types';\n\n` +
-  `// Auto-generated from watchpartydata/venues_with_photos.csv by scripts/csv_to_venues.mjs\n` +
-  `// ${venues.length} NYC/NJ World Cup 2026 watch party venues. Do not edit by hand — re-run the script.\n\n` +
+  `// Auto-generated from watchpartydata/venues_with_neighborhoods.csv by scripts/csv_to_venues.mjs\n` +
+  `// ${venues.length} NYC/NJ World Cup 2026 watch party venues. Do not edit by hand - re-run the script.\n\n` +
   `export const VENUES: Venue[] = [\n${venues.map(serializeVenue).join(',\n')},\n];\n`;
 
 writeFileSync(OUT_PATH, out, 'utf8');

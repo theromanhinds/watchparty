@@ -4,6 +4,7 @@ import { Button } from '../ui/Button';
 import { CITIES } from '../../data/cities';
 import { SPORTS } from '../../data/sports';
 import { FANBASES, COVER_CHARGE_OPTIONS, SORT_OPTIONS } from '../../lib/constants';
+import { NEIGHBORHOOD_GROUPS } from '../../lib/neighborhoods';
 import type { FilterState, SortOption } from '../../types';
 
 interface VenueFiltersProps {
@@ -49,6 +50,14 @@ export function VenueFilters({ filters, sort, activeFilterCount, onUpdate, onSor
     ...FANBASES.map((f) => ({ value: f.slug, label: f.label })),
   ];
 
+  const neighborhoodGroups = NEIGHBORHOOD_GROUPS.map((group) => ({
+    label: group.label,
+    options: group.neighborhoods.map((neighborhood) => ({
+      value: neighborhood,
+      label: neighborhood,
+    })),
+  }));
+
   return (
     <aside aria-label="Venue filters" className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm space-y-5">
       {/* Header */}
@@ -74,6 +83,13 @@ export function VenueFilters({ filters, sort, activeFilterCount, onUpdate, onSor
         value={filters.city}
         options={cityOptions}
         onChange={(e) => onUpdate('city', e.target.value)}
+      />
+      <Select
+        label="Neighborhood"
+        value={filters.neighborhood}
+        options={[{ value: 'all', label: 'All Neighborhoods' }]}
+        groups={neighborhoodGroups}
+        onChange={(e) => onUpdate('neighborhood', e.target.value)}
       />
       <Select
         label="Sport"

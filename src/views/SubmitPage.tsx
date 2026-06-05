@@ -159,7 +159,10 @@ export function SubmitPage() {
         </p>
 
         {isClaim && (
-          <input type="hidden" name="venue" value={claimedVenue?.name ?? venueSlug} />
+          <>
+            <input type="hidden" name="venueSlug" value={venueSlug} />
+            <input type="hidden" name="venue" value={claimedVenue?.name ?? venueSlug} />
+          </>
         )}
 
         {isClaim ? (
@@ -227,6 +230,16 @@ export function SubmitPage() {
             </div>
           </>
         )}
+
+        <label className="flex items-start gap-3 rounded-lg border border-gray-200 bg-gray-50 px-3 py-3 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            name="featuredInterest"
+            value="yes"
+            className="mt-0.5 h-4 w-4 rounded border-gray-300 text-sky-600 focus:ring-sky-500"
+          />
+          <span>Interested in a featured listing placement</span>
+        </label>
 
         <button
           type="submit"

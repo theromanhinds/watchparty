@@ -3,6 +3,7 @@ import type { FilterState, SortOption } from '../types';
 
 const DEFAULT_FILTERS: FilterState = {
   city: 'all',
+  neighborhood: 'all',
   sport: 'all',
   fanbase: 'all',
   coverCharge: 'all',
@@ -29,6 +30,7 @@ export function useFilters() {
 
   const activeFilterCount = Object.entries(filters).filter(([key, val]) => {
     if (key === 'search') return val !== '';
+    if (key === 'matchSlug') return false;
     if (typeof val === 'string') return val !== 'all';
     return val !== null;
   }).length;

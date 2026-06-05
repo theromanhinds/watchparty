@@ -16,13 +16,26 @@ export function Header() {
           <span>{SITE_NAME}</span>
         </Link>
 
-        {/* Single utility CTA */}
-        <Link
-          href="/submit"
-          className="rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:border-gray-400"
-        >
-          List Your Venue
-        </Link>
+        <nav className="flex items-center gap-3" aria-label="Primary">
+          <Link
+            href="/matches"
+            className="hidden text-sm font-semibold text-gray-600 transition-colors hover:text-gray-900 sm:inline"
+          >
+            Matches
+          </Link>
+          <Link
+            href="/venues"
+            className="hidden text-sm font-semibold text-gray-600 transition-colors hover:text-gray-900 sm:inline"
+          >
+            Venues
+          </Link>
+          <Link
+            href="/submit"
+            className="rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:border-gray-400"
+          >
+            List Your Venue
+          </Link>
+        </nav>
       </div>
     </header>
   );

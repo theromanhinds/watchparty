@@ -1,12 +1,23 @@
 import { cn } from '../../lib/utils';
 import type { SelectHTMLAttributes } from 'react';
 
-interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
-  options: { value: string; label: string }[];
+interface SelectOption {
+  value: string;
+  label: string;
 }
 
-export function Select({ label, options, className, id, ...props }: SelectProps) {
+interface SelectGroup {
+  label: string;
+  options: SelectOption[];
+}
+
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
+  label?: string;
+  options?: SelectOption[];
+  groups?: SelectGroup[];
+}
+
+export function Select({ label, options = [], groups = [], className, id, ...props }: SelectProps) {
   const selectId = id ?? label?.toLowerCase().replace(/\s+/g, '-');
   return (
     <div className="flex flex-col gap-1">
@@ -27,6 +38,15 @@ export function Select({ label, options, className, id, ...props }: SelectProps)
           <option key={opt.value} value={opt.value}>
             {opt.label}
           </option>
+        ))}
+        {groups.map((group) => (
+          <optgroup key={group.label} label={group.label}>
+            {group.options.map((opt) => (
+              <option key={opt.value} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
+          </optgroup>
         ))}
       </select>
     </div>

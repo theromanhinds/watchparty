@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Globe,
   Ticket,
@@ -13,6 +14,7 @@ import {
   Users,
 } from 'lucide-react';
 import { VENUES } from '../data/venues';
+import { MATCHES, formatMatchDate, matchDisplayName } from '../data/matches';
 import { NotFoundPage } from './NotFoundPage';
 import {
   FANBASE_FLAGS,
@@ -21,6 +23,7 @@ import {
   FEATURED_PRICE,
 } from '../lib/constants';
 import { getVenueGradient, coverChargeLabel, googleMapsUrl } from '../lib/venueDisplay';
+import { getFeaturedBadgeLabel } from '../lib/featured';
 import { cn } from '../lib/utils';
 
 interface VenueDetailPageProps {
@@ -33,6 +36,8 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
 
   const gradient = getVenueGradient(venue);
   const mapsUrl = googleMapsUrl(venue);
+  const featuredLabel = getFeaturedBadgeLabel(venue);
+  const upcomingMatches = MATCHES.slice(0, 4);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -90,18 +95,21 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
         )}
       >
         {venue.imageUrl && (
-          <img
+          <Image
             src={venue.imageUrl}
             alt={venue.name}
-            className="absolute inset-0 h-full w-full object-cover"
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
           />
         )}
         {!venue.imageUrl && (
           <span className="text-6xl opacity-90 drop-shadow" aria-hidden>⚽</span>
         )}
-        {venue.featured && (
+        {featuredLabel && (
           <span className="absolute left-3 top-3 rounded-full bg-amber-400 px-2.5 py-1 text-xs font-semibold text-white">
-            ⭐ Featured
+            {featuredLabel}
           </span>
         )}
         {venue.verifiedWatchParty && (
@@ -201,6 +209,27 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
             <hr className="my-5 border-gray-100" />
             <h2 className="text-base font-semibold text-gray-900">Showing these matches</h2>
             <p className="mt-2 text-sm leading-normal text-gray-600">{venue.matchesNote}</p>
+          </>
+        )}
+
+        {upcomingMatches.length > 0 && (
+          <>
+            <hr className="my-5 border-gray-100" />
+            <h2 className="text-base font-semibold text-gray-900">Upcoming World Cup matches</h2>
+            <div className="mt-3 space-y-2">
+              {upcomingMatches.map((match) => (
+                <Link
+                  key={match.id}
+                  href={`/matches/${match.slug}`}
+                  className="block rounded-lg border border-gray-200 px-3 py-2 text-sm transition-colors hover:border-sky-200 hover:bg-sky-50"
+                >
+                  <span className="font-medium text-gray-900">{matchDisplayName(match)}</span>
+                  <span className="mt-0.5 block text-xs text-gray-500">
+                    {formatMatchDate(match)} at {match.timeET}
+                  </span>
+                </Link>
+              ))}
+            </div>
           </>
         )}
 

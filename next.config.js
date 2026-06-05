@@ -2,6 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: __dirname,
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    localPatterns: [{ pathname: '/venue-photos/**' }],
+  },
   async redirects() {
     return [
       { source: '/cities', destination: '/cities/new-york', permanent: false },

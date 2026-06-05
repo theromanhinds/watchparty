@@ -1,24 +1,61 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Search } from 'lucide-react';
 import { VenueCard } from '../components/venue/VenueCard';
 import { FilterPills } from '../components/venue/FilterPills';
+import { Select } from '../components/ui/Select';
 import { VENUES } from '../data/venues';
 import { FILTER_PILLS, FEATURED_PRICE } from '../lib/constants';
+import { sortVenues } from '../lib/featured';
+import { NEIGHBORHOOD_GROUPS } from '../lib/neighborhoods';
 
 export function VenuesPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [search, setSearch] = useState(searchParams.get('search') ?? '');
+  const [neighborhood, setNeighborhood] = useState(searchParams.get('neighborhood') ?? 'all');
   const [activePill, setActivePill] = useState('all');
 
   const matcher = FILTER_PILLS.find((p) => p.id === activePill)?.match ?? (() => true);
+  const selectedNeighborhood = neighborhood !== 'all' ? neighborhood : undefined;
+
+  const neighborhoodGroups = NEIGHBORHOOD_GROUPS.map((group) => ({
+    label: group.label,
+    options: group.neighborhoods.map((value) => ({ value, label: value })),
+  }));
+
+  const replaceQuery = (next: { search?: string; neighborhood?: string }) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const nextSearch = next.search ?? search;
+    const nextNeighborhood = next.neighborhood ?? neighborhood;
+
+    if (nextSearch.trim()) params.set('search', nextSearch.trim());
+    else params.delete('search');
+
+    if (nextNeighborhood && nextNeighborhood !== 'all') params.set('neighborhood', nextNeighborhood);
+    else params.delete('neighborhood');
+
+    const query = params.toString();
+    router.replace(query ? `/venues?${query}` : '/venues', { scroll: false });
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    replaceQuery({ search });
+  };
+
+  const handleNeighborhoodChange = (value: string) => {
+    setNeighborhood(value);
+    replaceQuery({ neighborhood: value });
+  };
 
   const venues = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return VENUES.filter(matcher)
+    const filtered = VENUES.filter(matcher)
+      .filter((v) => !selectedNeighborhood || v.neighborhood === selectedNeighborhood)
       .filter((v) => {
         if (!q) return true;
         return (
@@ -28,10 +65,11 @@ export function VenuesPage() {
           v.address.toLowerCase().includes(q) ||
           v.fanbases.some((f) => f.includes(q))
         );
-      })
-      .sort((a, b) => Number(b.featured) - Number(a.featured) || a.name.localeCompare(b.name));
+      });
+
+    return sortVenues(filtered, 'featured', { neighborhood: selectedNeighborhood });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search, activePill]);
+  }, [search, activePill, selectedNeighborhood]);
 
   return (
     <>
@@ -44,7 +82,11 @@ export function VenuesPage() {
           </p>
 
           {/* Search */}
-          <div className="mt-4 flex max-w-md items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2.5 shadow-card">
+          <div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,28rem)_minmax(14rem,20rem)] sm:items-end">
+          <form
+            onSubmit={handleSearch}
+            className="flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2.5 shadow-card"
+          >
             <Search size={16} className="shrink-0 text-gray-400" />
             <input
               value={search}
@@ -53,7 +95,15 @@ export function VenuesPage() {
               aria-label="Search venues"
               className="min-w-0 flex-1 bg-transparent text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none"
             />
-          </div>
+          </form>
+          <Select
+            label="Neighborhood"
+            value={neighborhood}
+            options={[{ value: 'all', label: 'All neighborhoods' }]}
+            groups={neighborhoodGroups}
+            onChange={(e) => handleNeighborhoodChange(e.target.value)}
+          />
+        </div>
         </div>
       </div>
 
@@ -84,7 +134,11 @@ export function VenuesPage() {
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
             {venues.map((venue) => (
-              <VenueCard key={venue.id} venue={venue} />
+              <VenueCard
+                key={venue.id}
+                venue={venue}
+                featuredContext={{ neighborhood: selectedNeighborhood }}
+              />
             ))}
           </div>
         )}
