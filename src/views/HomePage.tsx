@@ -43,7 +43,7 @@ export function HomePage() {
           FIFA World Cup 2026 · New York &amp; New Jersey
         </p>
         <h1 className="mt-2 text-3xl font-bold leading-snug text-gray-900">
-          Find your World Cup watch party in NYC
+          Find Your World Cup Watch Party
         </h1>
         <p className="mt-2 text-sm text-gray-500">
           {VENUES.length} venues across New York and New Jersey

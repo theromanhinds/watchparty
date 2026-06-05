@@ -24,10 +24,21 @@ export function VenueCard({ venue, className }: VenueCardProps) {
       {/* Photo area */}
       <div
         className={cn(
-          'relative flex aspect-video w-full items-center justify-center bg-gradient-to-br',
+          'relative flex aspect-video w-full items-center justify-center overflow-hidden bg-gradient-to-br',
           gradient
         )}
       >
+        {venue.imageUrl && (
+          <img
+            src={venue.imageUrl}
+            alt={venue.name}
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="lazy"
+          />
+        )}
+        {!venue.imageUrl && (
+          <span className="text-4xl opacity-90 drop-shadow-sm" aria-hidden>⚽</span>
+        )}
         {venue.featured && (
           <span className="absolute left-2 top-2 rounded-full bg-amber-400 px-2 py-1 text-xs font-semibold text-white">
             ⭐ Featured
@@ -38,9 +49,6 @@ export function VenueCard({ venue, className }: VenueCardProps) {
             ✓ Verified
           </span>
         )}
-        <span className="text-4xl opacity-90 drop-shadow-sm" aria-hidden>
-          ⚽
-        </span>
       </div>
 
       {/* Content */}

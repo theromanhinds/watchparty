@@ -1,4 +1,4 @@
-// Converts ../watchpartydata/venues_enriched.csv → src/data/venues.ts
+// Converts ../watchpartydata/venues_with_photos.csv → src/data/venues.ts
 // Run from the watchparty project root:  node scripts/csv_to_venues.mjs
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -6,7 +6,7 @@ import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
-const CSV_PATH = join(ROOT, '..', 'watchpartydata', 'venues_enriched.csv');
+const CSV_PATH = join(ROOT, '..', 'watchpartydata', 'venues_with_photos.csv');
 const OUT_PATH = join(ROOT, 'src', 'data', 'venues.ts');
 
 // ── Minimal RFC-4180 CSV parser (handles quotes, commas, newlines) ──
@@ -165,6 +165,13 @@ const venues = records.map((rec, idx) => {
   const address = (rec.address || '').trim();
   const googleMapsUrl = `https://maps.google.com/?q=${encodeURIComponent(`${name} ${address}`)}`;
 
+  // photo_url is like "venue_photos/foo.jpg" or "venue_photos/_fallback_manhattan.jpg"
+  // → serve from Next.js public folder as "/venue-photos/foo.jpg"
+  const rawPhotoUrl = (rec.photo_url || '').trim();
+  const imageUrl = rawPhotoUrl
+    ? '/' + rawPhotoUrl.replace(/^venue_photos\//, 'venue-photos/')
+    : undefined;
+
   return {
     id: `venue-${String(idx + 1).padStart(3, '0')}`,
     slug,
@@ -180,6 +187,7 @@ const venues = records.map((rec, idx) => {
     website: cleanUrl(rec.website),
     instagram: instagramUrl(rec.instagram_handle),
     googleMapsUrl,
+    imageUrl,
     description: notes || `Watch World Cup 2026 matches at ${name}${neighborhood ? ` in ${neighborhood}` : ''}.`,
     venueType: (rec.venue_type || '').trim() || undefined,
     matchesNote: (rec.specific_matches_listed || '').trim() || undefined,
@@ -217,6 +225,7 @@ function serializeVenue(v) {
   push('website', jsStr(v.website));
   push('instagram', jsStr(v.instagram));
   push('googleMapsUrl', jsStr(v.googleMapsUrl));
+  push('imageUrl', jsStr(v.imageUrl));
   push('description', jsStr(v.description));
   push('venueType', jsStr(v.venueType));
   push('matchesNote', jsStr(v.matchesNote));
@@ -239,7 +248,7 @@ function serializeVenue(v) {
 
 const out =
   `import type { Venue } from '../types';\n\n` +
-  `// Auto-generated from watchpartydata/venues_enriched.csv by scripts/csv_to_venues.mjs\n` +
+  `// Auto-generated from watchpartydata/venues_with_photos.csv by scripts/csv_to_venues.mjs\n` +
   `// ${venues.length} NYC/NJ World Cup 2026 watch party venues. Do not edit by hand — re-run the script.\n\n` +
   `export const VENUES: Venue[] = [\n${venues.map(serializeVenue).join(',\n')},\n];\n`;
 

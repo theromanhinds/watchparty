@@ -85,10 +85,20 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
       {/* Hero image */}
       <div
         className={cn(
-          'relative flex h-[56vw] max-h-80 w-full items-center justify-center bg-gradient-to-br',
+          'relative flex h-[56vw] max-h-80 w-full items-center justify-center overflow-hidden bg-gradient-to-br',
           gradient
         )}
       >
+        {venue.imageUrl && (
+          <img
+            src={venue.imageUrl}
+            alt={venue.name}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
+        {!venue.imageUrl && (
+          <span className="text-6xl opacity-90 drop-shadow" aria-hidden>⚽</span>
+        )}
         {venue.featured && (
           <span className="absolute left-3 top-3 rounded-full bg-amber-400 px-2.5 py-1 text-xs font-semibold text-white">
             ⭐ Featured
@@ -99,9 +109,6 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
             ✓ Verified
           </span>
         )}
-        <span className="text-6xl opacity-90 drop-shadow" aria-hidden>
-          ⚽
-        </span>
       </div>
 
       {/* Content */}
