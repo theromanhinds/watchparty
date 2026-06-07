@@ -1,12 +1,28 @@
 import type { Metadata } from 'next';
 import '@/index.css';
+import 'flag-icons/css/flag-icons.min.css';
 import { Layout } from '@/components/layout/Layout';
 
 export const metadata: Metadata = {
-  title: 'FindWatchParty — Find Sports Watch Parties Near You',
+  title: 'FindWatchParty — World Cup 2026 Watch Parties in NYC & NJ',
   description:
-    'Find watch parties near you for the World Cup, NBA Finals, NFL playoffs and more. Filter by city, sport, fanbase, and vibe.',
+    'Find your FIFA World Cup 2026 watch party in New York & New Jersey. 161 venues — sports bars, fan zones, and restaurants. Filter by neighborhood, fanbase, free entry, sound on, and more.',
   icons: { icon: '/favicon.svg' },
+  openGraph: {
+    title: 'FindWatchParty — World Cup 2026 Watch Parties in NYC & NJ',
+    description:
+      '161 venues in New York & New Jersey. Sports bars, fan zones, and restaurants showing every match. Filter by neighborhood, fanbase, free entry, and more.',
+    url: 'https://findwatchparty.com',
+    siteName: 'FindWatchParty',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FindWatchParty — World Cup 2026 Watch Parties in NYC & NJ',
+    description:
+      '161 venues in New York & New Jersey showing every World Cup match. Find your spot.',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

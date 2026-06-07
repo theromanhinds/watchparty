@@ -211,7 +211,7 @@ export function SubmitPage() {
             <Field label="Phone" name="phone" type="tel" placeholder="(555) 000-0000" />
             <Field label="Website" name="website" type="url" placeholder="https://yourbar.com" />
 
-            <hr className="border-gray-100" />
+            <hr className="border-gray-200" />
             <h2 className="font-semibold text-gray-900">Your Contact Info</h2>
             <Field label="Your Name" name="contactName" required />
             <Field label="Email Address" name="contactEmail" type="email" required />

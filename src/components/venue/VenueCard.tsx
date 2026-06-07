@@ -58,12 +58,12 @@ export function VenueCard({ venue, className, featuredContext }: VenueCardProps)
 
       <div className="px-3 py-3">
         <p className="truncate text-xs text-gray-500">
-          {venue.neighborhood ? `${venue.neighborhood} - ` : ''}
+          {venue.neighborhood ? `${venue.neighborhood} · ` : ''}
           {venue.city}
         </p>
         <p className="mt-0.5 truncate text-sm font-semibold text-gray-900">{venue.name}</p>
         <p className="mt-1 truncate text-xs text-gray-500">
-          {coverChargeLabel(venue)} - {venue.soundOn ? 'Sound on' : 'Silent'}
+          {coverChargeLabel(venue)} · {venue.soundOn ? 'Sound on' : 'Silent'}
         </p>
       </div>
     </Link>

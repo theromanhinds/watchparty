@@ -37,7 +37,8 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
   const gradient = getVenueGradient(venue);
   const mapsUrl = googleMapsUrl(venue);
   const featuredLabel = getFeaturedBadgeLabel(venue);
-  const upcomingMatches = MATCHES.slice(0, 4);
+  const now = new Date();
+  const upcomingMatches = MATCHES.filter((m) => new Date(m.isoDateTimeET) > now).slice(0, 4);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -120,7 +121,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto -mt-4 max-w-2xl rounded-t-2xl bg-white px-5 pb-28 pt-6">
+      <div className="relative z-10 mx-auto -mt-4 max-w-2xl rounded-t-2xl bg-white px-5 pb-28 pt-6 sm:pb-10">
         <p className="text-xs text-gray-500">
           {venue.neighborhood ? `${venue.neighborhood} · ` : ''}
           {venue.city}, {venue.stateCode}
@@ -130,7 +131,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
           <p className="mt-1 text-sm capitalize text-gray-500">{venue.venueType}</p>
         )}
 
-        <hr className="my-5 border-gray-100" />
+        <hr className="my-5 border-gray-200" />
 
         {/* Detail rows */}
         <ul className="space-y-3">
@@ -179,7 +180,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
         {/* Description */}
         {venue.description && (
           <>
-            <hr className="my-5 border-gray-100" />
+            <hr className="my-5 border-gray-200" />
             <p className="text-sm leading-normal text-gray-700">{venue.description}</p>
           </>
         )}
@@ -187,7 +188,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
         {/* Fanbases */}
         {venue.fanbases.length > 0 && (
           <>
-            <hr className="my-5 border-gray-100" />
+            <hr className="my-5 border-gray-200" />
             <h2 className="text-base font-semibold text-gray-900">Fanbases</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {venue.fanbases.map((fb) => (
@@ -206,7 +207,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
         {/* Matches */}
         {venue.matchesNote && venue.matchesNote.toLowerCase() !== 'unknown' && (
           <>
-            <hr className="my-5 border-gray-100" />
+            <hr className="my-5 border-gray-200" />
             <h2 className="text-base font-semibold text-gray-900">Showing these matches</h2>
             <p className="mt-2 text-sm leading-normal text-gray-600">{venue.matchesNote}</p>
           </>
@@ -214,7 +215,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
 
         {upcomingMatches.length > 0 && (
           <>
-            <hr className="my-5 border-gray-100" />
+            <hr className="my-5 border-gray-200" />
             <h2 className="text-base font-semibold text-gray-900">Upcoming World Cup matches</h2>
             <div className="mt-3 space-y-2">
               {upcomingMatches.map((match) => (
@@ -233,9 +234,48 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
           </>
         )}
 
-        {/* Featured upsell + claim */}
-        <hr className="my-5 border-gray-100" />
-        <div className="flex flex-col items-start gap-2">
+        {/* Action buttons — desktop inline */}
+        <hr className="my-5 border-gray-200" />
+        <div className="hidden sm:flex flex-col gap-3">
+          <div className="flex gap-3">
+            <a
+              href={mapsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 rounded-full border border-gray-300 px-6 py-3.5 text-center text-base font-semibold text-gray-700 transition-colors hover:border-gray-500 hover:bg-gray-50"
+            >
+              Get Directions
+            </a>
+            {venue.bookingUrl ? (
+              <a
+                href={venue.bookingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 rounded-full bg-sky-500 px-6 py-3.5 text-center text-base font-semibold text-white transition-colors hover:bg-sky-600"
+              >
+                Book a Spot
+              </a>
+            ) : (
+              <Link
+                href={`/submit?claim=true&venue=${venue.slug}`}
+                className="flex-1 rounded-full border border-gray-300 px-6 py-3.5 text-center text-base font-semibold text-gray-700 transition-colors hover:border-gray-500 hover:bg-gray-50"
+              >
+                Claim this listing
+              </Link>
+            )}
+          </div>
+          <a
+            href={STRIPE_FEATURED_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full rounded-full border border-amber-300 bg-amber-50 px-6 py-3.5 text-center text-base font-semibold text-amber-700 transition-colors hover:bg-amber-100"
+          >
+            Get more visibility — {FEATURED_PRICE} →
+          </a>
+        </div>
+
+        {/* Featured upsell + claim — mobile only (sticky bar handles primary actions) */}
+        <div className="flex flex-col items-start gap-2 sm:hidden">
           <a
             href={STRIPE_FEATURED_URL}
             target="_blank"
@@ -253,8 +293,8 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
         </div>
       </div>
 
-      {/* Sticky bottom bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 flex gap-3 border-t border-gray-200 bg-white p-4">
+      {/* Sticky bottom bar — mobile only */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 flex gap-3 border-t border-gray-300 bg-white p-4 sm:hidden">
         <a
           href={mapsUrl}
           target="_blank"

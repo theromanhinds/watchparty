@@ -62,7 +62,7 @@ export default async function Page({ params }: Props) {
       />
 
       <div className="bg-white">
-        <section className="border-b border-gray-100 px-4 py-8">
+        <section className="border-b border-gray-200 px-4 py-8">
           <div className="mx-auto max-w-6xl">
             <Link href="/matches" className="text-sm font-semibold text-sky-600 hover:text-sky-700">
               Match schedule

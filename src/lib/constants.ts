@@ -5,15 +5,13 @@ export const SITE_DESCRIPTION =
   'Find your FIFA World Cup 2026 watch party across New York & New Jersey. 161 venues — fan zones, sports bars, and restaurants by nationality. Filter by free entry, sound on, outdoor, and more.';
 
 // ── Monetization ───────────────────────────────────────────────
-// TODO: Replace with the real Stripe Payment Link once created in the Stripe dashboard.
-// Product: "Featured Listing — World Cup 2026", $99 one-time, custom fields: Venue Name, City, Email.
-export const STRIPE_FEATURED_URL = 'https://buy.stripe.com/REPLACE_WITH_REAL_LINK';
+export const STRIPE_FEATURED_URL = 'https://buy.stripe.com/4gM5kE2L1aRj5eQ3G1bMQ00';
 export const FEATURED_PRICE = '$99';
-export const CONTACT_EMAIL = 'roman.hinds17@gmail.com';
+export const CONTACT_EMAIL = 'roman@findwatchparty.com';
 
 
 export const FANBASES = [
-  { slug: 'usmnt', label: 'USA (USMNT)' },
+  { slug: 'usmnt', label: 'USA' },
   { slug: 'mexico', label: 'Mexico' },
   { slug: 'brazil', label: 'Brazil' },
   { slug: 'argentina', label: 'Argentina' },
@@ -29,29 +27,27 @@ export const FANBASES = [
   { slug: 'morocco', label: 'Morocco' },
   { slug: 'japan', label: 'Japan' },
   { slug: 'south-korea', label: 'South Korea' },
-  { slug: 'general', label: 'General / Mixed' },
 ];
 
-export const COVER_CHARGE_OPTIONS = [
-  { value: 'all', label: 'Any Price' },
-  { value: 'free', label: 'Free Entry' },
-  { value: 'ticketed', label: 'Ticketed' },
-  { value: 'varies', label: 'Varies by Game' },
-];
-
-export const SORT_OPTIONS = [
-  { value: 'featured', label: 'Featured First' },
-  { value: 'rating', label: 'Highest Rated' },
-  { value: 'name', label: 'A–Z' },
-];
-
-export const NAV_LINKS = [
-  { href: '/events', label: 'Events' },
-  { href: '/cities', label: 'Cities' },
-  { href: '/venues', label: 'All Venues' },
-  { href: '/sports', label: 'Sports' },
-  { href: '/submit', label: 'List Your Venue' },
-];
+// ISO 3166-1 alpha-2 codes for flag-icons (fi fi-{code})
+export const FANBASE_ISO: Record<string, string> = {
+  usmnt: 'us',
+  mexico: 'mx',
+  brazil: 'br',
+  argentina: 'ar',
+  england: 'gb-eng',
+  france: 'fr',
+  germany: 'de',
+  spain: 'es',
+  portugal: 'pt',
+  netherlands: 'nl',
+  colombia: 'co',
+  italy: 'it',
+  canada: 'ca',
+  morocco: 'ma',
+  japan: 'jp',
+  'south-korea': 'kr',
+};
 
 // ── Homepage / Venues filter pills (Airbnb-style category strip) ──
 export interface FilterPill {

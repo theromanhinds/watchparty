@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { VENUES } from '@/data/venues';
 import { CITIES } from '@/data/cities';
-import { EVENTS } from '@/data/events';
 import { MATCHES } from '@/data/matches';
 import { SITE_URL } from '@/lib/constants';
 
@@ -36,12 +35,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const eventRoutes: MetadataRoute.Sitemap = EVENTS.map((e) => ({
-    url: `${SITE_URL}/events/${e.slug}`,
-    lastModified: now,
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  }));
+  const eventRoutes: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE_URL}/events/fifa-world-cup-2026`,
+      lastModified: now,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+  ];
 
   const matchRoutes: MetadataRoute.Sitemap = MATCHES.map((match) => ({
     url: `${SITE_URL}/matches/${match.slug}`,
@@ -51,4 +52,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
   return [...staticRoutes, ...cityRoutes, ...eventRoutes, ...matchRoutes, ...venueRoutes];
+  // Sports routes intentionally excluded — all redirect to /venues
 }

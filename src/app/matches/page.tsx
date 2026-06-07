@@ -16,7 +16,7 @@ export default function Page() {
 
   return (
     <div className="bg-white">
-      <section className="border-b border-gray-100 px-4 py-8">
+      <section className="border-b border-gray-200 px-4 py-8">
         <div className="mx-auto max-w-6xl">
           <p className="text-xs font-medium uppercase tracking-wide text-sky-600">
             FIFA World Cup 2026
@@ -37,7 +37,7 @@ export default function Page() {
             <Link
               key={match.id}
               href={`/matches/${match.slug}`}
-              className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-colors hover:border-sky-200 hover:bg-sky-50"
+              className="rounded-xl border border-gray-300 bg-white p-4 shadow-sm transition-colors hover:border-sky-300 hover:bg-sky-50"
             >
               <div className="flex items-start justify-between gap-3">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">

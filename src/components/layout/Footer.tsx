@@ -9,11 +9,12 @@ const FOOTER_LINKS = [
   { href: '/submit', label: 'List Your Venue' },
   { href: '/about', label: 'About' },
   { href: '/faq', label: 'FAQ' },
+  { href: '/sitemap', label: 'Sitemap' },
 ];
 
 export function Footer() {
   return (
-    <footer className="border-t border-gray-200 bg-white mt-16">
+    <footer className="border-t border-gray-300 bg-white mt-16">
       <div className="mx-auto max-w-6xl px-4 py-10">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           {/* Brand */}
@@ -44,7 +45,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="mt-8 border-t border-gray-100 pt-6 text-xs text-gray-400">
+        <div className="mt-8 border-t border-gray-200 pt-6 text-xs text-gray-400">
           <p>© {new Date().getFullYear()} {SITE_NAME}. All rights reserved.</p>
         </div>
       </div>
