@@ -17,7 +17,7 @@ import { VENUES } from '../data/venues';
 import { MATCHES, formatMatchDate, matchDisplayName } from '../data/matches';
 import { NotFoundPage } from './NotFoundPage';
 import {
-  FANBASE_FLAGS,
+  FANBASE_ISO,
   fanbaseLabel,
   STRIPE_FEATURED_URL,
   FEATURED_PRICE,
@@ -200,15 +200,26 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
             <hr className="my-5 border-gray-200" />
             <h2 className="text-base font-semibold text-gray-900">Fanbases</h2>
             <div className="mt-3 flex flex-wrap gap-2">
-              {venue.fanbases.map((fb) => (
-                <span
-                  key={fb}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
-                >
-                  <span aria-hidden>{FANBASE_FLAGS[fb] ?? '⚽'}</span>
-                  {fanbaseLabel(fb)}
-                </span>
-              ))}
+              {venue.fanbases.map((fb) => {
+                const iso = FANBASE_ISO[fb];
+                return (
+                  <span
+                    key={fb}
+                    className="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700"
+                  >
+                    {iso ? (
+                      <span
+                        className={`fi fi-${iso} rounded-sm`}
+                        style={{ width: '1.1em', height: '0.825em', display: 'inline-block', flexShrink: 0 }}
+                        aria-hidden
+                      />
+                    ) : (
+                      <span aria-hidden>⚽</span>
+                    )}
+                    {fanbaseLabel(fb)}
+                  </span>
+                );
+              })}
             </div>
           </>
         )}
