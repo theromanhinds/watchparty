@@ -37,6 +37,14 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
   const gradient = getVenueGradient(venue);
   const mapsUrl = googleMapsUrl(venue);
   const featuredLabel = getFeaturedBadgeLabel(venue);
+
+  function handleDirectionsClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      e.preventDefault();
+      window.location.href = `maps://?q=${encodeURIComponent(`${venue.name} ${venue.address} ${venue.city}`)}`;
+    }
+    // Android: Google Maps app intercepts the maps.google.com/maps URL natively
+  }
   const now = new Date();
   const upcomingMatches = MATCHES.filter((m) => new Date(m.isoDateTimeET) > now).slice(0, 4);
 
@@ -170,6 +178,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleDirectionsClick}
               className="flex items-center gap-3 text-sm font-medium text-sky-600 hover:text-sky-700"
             >
               <MapPin size={18} /> Get directions ↗
@@ -242,6 +251,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
               href={mapsUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={handleDirectionsClick}
               className="flex-1 rounded-full border border-gray-300 px-6 py-3.5 text-center text-base font-semibold text-gray-700 transition-colors hover:border-gray-500 hover:bg-gray-50"
             >
               Get Directions
@@ -299,6 +309,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={handleDirectionsClick}
           className="flex-1 rounded-full border border-gray-300 px-4 py-3 text-center text-sm font-semibold text-gray-700 transition-colors hover:border-gray-400"
         >
           Get Directions

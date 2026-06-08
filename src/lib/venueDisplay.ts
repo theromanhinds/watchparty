@@ -30,6 +30,6 @@ export function coverChargeLabel(venue: Venue): string {
 export function googleMapsUrl(venue: Venue): string {
   return (
     venue.googleMapsUrl ??
-    `https://maps.google.com/?q=${encodeURIComponent(`${venue.name} ${venue.address} ${venue.city}`)}`
+    `https://maps.google.com/maps?q=${encodeURIComponent(`${venue.name} ${venue.address} ${venue.city}`)}`
   );
 }
