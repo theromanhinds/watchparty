@@ -41,7 +41,7 @@ export function VenueDetailPage({ slug }: VenueDetailPageProps) {
   function handleDirectionsClick(e: React.MouseEvent<HTMLAnchorElement>) {
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
       e.preventDefault();
-      window.location.href = `maps://?q=${encodeURIComponent(`${venue.name} ${venue.address} ${venue.city}`)}`;
+      window.location.href = `maps://?q=${encodeURIComponent(`${venue!.name} ${venue!.address} ${venue!.city}`)}`;
     }
     // Android: Google Maps app intercepts the maps.google.com/maps URL natively
   }
